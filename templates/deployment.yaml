@@ -1,0 +1,77 @@
+{{- $servicePrefix:= printf "%s%s" .Values.prefix .Release.Name -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ $servicePrefix }}-deployment
+  labels:
+    app: {{ $servicePrefix }}-app
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ $servicePrefix }}-app
+  template:
+    metadata:
+      labels:
+        app: {{ $servicePrefix }}-app
+      annotations:
+        rollme: {{ randAlphaNum 16 | quote }}
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.service.targetPort }}"
+        prometheus.io/path: "/actuator/prometheus"
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ $servicePrefix }}-container
+          envFrom:
+            - configMapRef:
+                name: {{ $servicePrefix }}-configmap
+            {{- if .Values.secrets.enabled }}
+            - secretRef:
+                name: {{ $servicePrefix }}-secret
+            {{- end }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: {{ .Values.service.targetPort }}
+            initialDelaySeconds: {{.Values.liveness.initialDelaySeconds}}
+            periodSeconds: {{.Values.liveness.periodSeconds}}
+            successThreshold: {{.Values.liveness.successThreshold}}
+            failureThreshold: {{.Values.liveness.failureThreshold}}
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: {{ .Values.service.targetPort }}
+            initialDelaySeconds: {{.Values.readiness.initialDelaySeconds}}
+            periodSeconds: {{.Values.readiness.periodSeconds}}
+            successThreshold: {{.Values.readiness.successThreshold}}
+            failureThreshold: {{.Values.readiness.failureThreshold}}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

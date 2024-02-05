@@ -1,0 +1,11 @@
+{{- $servicePrefix:= printf "%s%s" .Values.prefix .Release.Name -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ $servicePrefix }}-configmap
+data:
+  SERVER_PORT: "{{ .Values.service.targetPort }}"
+  {{- with .Values.config }}
+    {{- toYaml . | nindent 2 }}
+  {{- end }}
