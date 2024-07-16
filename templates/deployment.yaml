@@ -1,4 +1,4 @@
-{{- $servicePrefix:= printf "%s%s" .Values.prefix .Release.Name -}}
+{{- $servicePrefix:= printf "%s" .Release.Name -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
