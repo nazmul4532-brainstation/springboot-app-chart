@@ -5,9 +5,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
   name: {{ $servicePrefix }}-configmap
 data:
-  TZ: "Asia/Dhaka"
-  SERVER_PORT: "{{ .Values.service.targetPort }}"
-  SPRING_PROFILES_ACTIVE: "k8s"
   {{- with .Values.config }}
     {{- toYaml . | nindent 2 }}
   {{- end }}
+  TZ: "Asia/Dhaka"
+  SERVER_PORT: "{{ .Values.service.targetPort }}"
+  SPRING_PROFILES_ACTIVE: "k8s"

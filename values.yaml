@@ -16,12 +16,16 @@ nameOverride: ""
 fullNameOverride: ""
 
 liveness:
+  enabled: true
+  method: http
   initialDelaySeconds: 70
   periodSeconds: 1
   successThreshold: 1
   failureThreshold: 5
 
 readiness:
+  enabled: true
+  method: http
   initialDelaySeconds: 70
   periodSeconds: 1
   successThreshold: 1
@@ -37,39 +41,40 @@ serviceAccount:
   # Specifies whether a service account should be created
   create: false
   # Annotations to add to the service account
-  annotations: {}
+  annotations: { }
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations: {}
+podAnnotations: { }
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext: { }
+# fsGroup: 2000
 
-securityContext: {}
+securityContext: { }
   # capabilities:
   #   drop:
   #   - ALL
   # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+# runAsNonRoot: true
+# runAsUser: 1000
 
 service:
   type: ClusterIP
   targetPort: 8080
   port: 80
+  labels: [ ]
 
 ingress:
   enabled: true
   className: "nginx"
-  annotations: {}
-  hosts: []
+  annotations: { }
+  hosts: [ ]
   #    - host: chart-example.local
   #      paths:
   #        - path: /
   #          pathType: Prefix
-  tls: []
+  tls: [ ]
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
@@ -86,8 +91,10 @@ resources:
     memory: "2Gi"
     cpu: "1000m"
 
-nodeSelector: {}
+nodeSelector: { }
 
-tolerations: []
+tolerations: [ ]
 
-affinity: {}
+affinity: { }
+
+volumes: [ ]

@@ -46,24 +46,44 @@ spec:
             - name: http
               containerPort: {{ .Values.service.targetPort }}
               protocol: TCP
+          {{- if .Values.liveness.enabled }}
           livenessProbe:
+            {{- if eq .Values.liveness.method "http" }}
             httpGet:
               path: /actuator/health/liveness
+            {{- end }}
+            {{- if eq .Values.liveness.method "tcp" }}
+            tcpSocket:
+            {{- end }}
               port: {{ .Values.service.targetPort }}
             initialDelaySeconds: {{.Values.liveness.initialDelaySeconds}}
             periodSeconds: {{.Values.liveness.periodSeconds}}
             successThreshold: {{.Values.liveness.successThreshold}}
             failureThreshold: {{.Values.liveness.failureThreshold}}
+          {{- end }}
+          {{- if .Values.readiness.enabled }}
           readinessProbe:
+            {{- if eq .Values.liveness.method "http" }}
             httpGet:
-              path: /actuator/health/readiness
+              path: /actuator/health/liveness
+            {{- end }}
+            {{- if eq .Values.liveness.method "tcp" }}
+            tcpSocket:
+            {{- end }}
               port: {{ .Values.service.targetPort }}
             initialDelaySeconds: {{.Values.readiness.initialDelaySeconds}}
             periodSeconds: {{.Values.readiness.periodSeconds}}
             successThreshold: {{.Values.readiness.successThreshold}}
             failureThreshold: {{.Values.readiness.failureThreshold}}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            {{- range .Values.volumes }}
+            - name: {{ .name }}-volume
+              mountPath: {{ .mountPath }}
+              readOnly: {{ .readOnly }}
+            {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -75,5 +95,13 @@ spec:
       {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if gt (len .Values.volumes) 0 }}
+      volumes:
+        {{- range .Values.volumes }}
+        - name: {{ .name }}-volume
+          persistentVolumeClaim:
+            claimName: {{ .name }}-claim
+        {{- end }}
       {{- end }}
 {{- end }}
