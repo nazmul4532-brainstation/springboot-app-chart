@@ -22,14 +22,14 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    - host: {{ $servicePrefix }}.devbsfintech23.com
+    - host: {{ $servicePrefix }}-service.devbsfintech23.com
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: {{ $servicePrefix }}
+                name: {{ $servicePrefix }}-service
                 port:
                   number: {{ $svcPort }}
     {{- range .Values.ingress.hosts }}
@@ -41,7 +41,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ $servicePrefix }}
+                name: {{ $servicePrefix }}-service
                 port:
                   number: {{ $svcPort }}
           {{- end }}
