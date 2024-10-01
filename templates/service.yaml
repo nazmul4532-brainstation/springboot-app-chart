@@ -1,4 +1,4 @@
-{{- $servicePrefix:= printf "%s%s" .Values.prefix .Release.Name -}}
+{{- $servicePrefix:= printf "%s" .Release.Name -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -12,6 +12,9 @@ metadata:
 {{- end }}
 spec:
   type: {{ .Values.service.type }}
+{{- if eq .Values.kind "StatefulSet" }}
+  clusterIP: {{ .Values.service.clusterIP | default "None" }}
+{{- end }}
   selector:
     app: {{ $servicePrefix }}-app
   ports:
