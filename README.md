@@ -31,7 +31,7 @@ To deploy a **StatefulSet**, you need to ensure that:
 ```yaml
   kind: StatefulSet
 ```
-is set in your template. A StatefulSet is ideal for applications that require stable network identifiers, persistent storage, and ordered deployment and scaling.
+is set in your custom values file. A StatefulSet is ideal for applications that require stable network identifiers, persistent storage, and ordered deployment and scaling.
 
 ### Service
 
