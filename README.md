@@ -26,7 +26,7 @@ The chart includes a **Deployment** configuration that allows you to manage stat
 
 ### StatefulSet
 
- It also consists of support for StatefulSets. A StatefulSet is ideal for applications that require stable network identifiers, persistent storage, and ordered deployment and scaling. To deploy a **StatefulSet**, you need to ensure that:
+It also consists of support for StatefulSets. A StatefulSet is ideal for applications that require stable network identifiers, persistent storage, and ordered deployment and scaling. To deploy a **StatefulSet**, you need to ensure that:
 
 ```yaml
   kind: StatefulSet
