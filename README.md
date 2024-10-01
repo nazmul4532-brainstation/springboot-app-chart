@@ -22,16 +22,16 @@ helm install <release-name> springboot-app-chart-<version>.tgz -f custom-values.
 
 ### Deployment
 
-The chart includes a **Deployment** configuration that allows you to manage stateless applications. It also consists of support for StatefulSets. Services and Environment Variables for them can be configured in the values file. You can customize the container behavior, including the number of replicas and container settings. 
+The chart includes a **Deployment** configuration that allows you to manage stateless applications. Services and Environment Variables for them can be configured in the values file. You can customize the container behavior, including the number of replicas and container settings. 
 
 ### StatefulSet
 
-To deploy a **StatefulSet**, you need to ensure that:
+ It also consists of support for StatefulSets. A StatefulSet is ideal for applications that require stable network identifiers, persistent storage, and ordered deployment and scaling. To deploy a **StatefulSet**, you need to ensure that:
 
 ```yaml
   kind: StatefulSet
 ```
-is set in your custom values file. A StatefulSet is ideal for applications that require stable network identifiers, persistent storage, and ordered deployment and scaling.
+is set in your custom values file.
 
 ### Service
 
