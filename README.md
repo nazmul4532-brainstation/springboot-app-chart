@@ -53,8 +53,6 @@ config:
   MONGO_URL: "<URL>"
 ```
 
-
-
 ### Other Important Configurations 
 ```yaml
 replicaCount: 1
@@ -71,3 +69,5 @@ resources:
     memory: "1Gi"
     cpu: "500m"
 ```
+
+Explore the Values File for further understanding
