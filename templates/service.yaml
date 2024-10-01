@@ -12,6 +12,9 @@ metadata:
 {{- end }}
 spec:
   type: {{ .Values.service.type }}
+{{- if eq .Values.kind "StatefulSet" }}
+  clusterIP: {{ .Values.service.clusterIP | default "None" }}
+{{- end }}
   selector:
     app: {{ $servicePrefix }}-app
   ports:
