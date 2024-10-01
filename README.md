@@ -3,15 +3,16 @@
 This repository contains a Helm chart template for deploying a Spring Boot application. Below is an overview of the key components, including Deployment, StatefulSet, Service, and configuration settings.
 ## Package Generation
 
-Modify the package version in the `Chart.yaml` file. Move in the directory with Chart.yaml file and execute the following command:
+Move in the directory with Chart.yaml file and execute the following command:
 ```bash
 cd springboot-app-chart
 helm package .
 ```
+This will generate a chart package, `spring-boot-app-chart-0.2.1.tgz`. Modify the package version in the `Chart.yaml` file.
 
 ## Application Deployment with External Values File
 
-Using an External values files to configure the necessary configurations for the Deployment or StatefulSet, like their image, resource limitations, replicas along with their services and environment variables. The <version> in this case is 0.2.1.
+Using an External values files to configure the necessary configurations for the Deployment or StatefulSet, like their image, resource limitations, replicas along with their services and environment variables.
 
 ```bash
 helm install <release-name> springboot-app-chart-<version>.tgz -f custom-values.yaml
@@ -54,7 +55,7 @@ config:
 
 
 
-## Other Example Configurations
+## Other Important Configurations 
 ```yaml
 replicaCount: 1
 image:
