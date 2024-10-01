@@ -55,7 +55,7 @@ config:
 
 
 
-## Other Important Configurations 
+### Other Important Configurations 
 ```yaml
 replicaCount: 1
 image:
